@@ -10,12 +10,6 @@ import java.util.List;
 @Repository
 public interface CredentialsMapper {
 
-    @Select("SELECT * FROM CREDENTIALS")
-    List<Credentials> findAll();
-
-    @Select("SELECT * FROM CREDENTIALS WHERE credentialid = #{credentialid}")
-    Credentials findOne(int credentialid);
-
     @Select("SELECT * FROM CREDENTIALS WHERE userid = #{userid}")
     List<Credentials> findByUserId(int userid);
 

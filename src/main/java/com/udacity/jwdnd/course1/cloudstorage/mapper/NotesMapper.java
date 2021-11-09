@@ -9,11 +9,6 @@ import java.util.List;
 @Mapper
 @Repository
 public interface NotesMapper {
-    @Select("SELECT * FROM NOTES")
-    List<Notes> findAll();
-
-    @Select("SELECT * FROM NOTES WHERE noteid = #{noteid}")
-    Notes findOne(int noteid);
 
     @Select("SELECT * FROM NOTES WHERE userid = #{userid}")
     List<Notes> findByUserId(int userid);

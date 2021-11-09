@@ -13,12 +13,6 @@ import java.util.List;
 @Repository
 public interface FilesMapper {
 
-    @Select("SELECT * FROM FILES")
-    List<Files> findAll();
-
-    @Select("SELECT * FROM FILES WHERE fileid = #{fileid}")
-    Files findOne(int fileid);
-
     @Select("SELECT * FROM FILES WHERE userid = #{userid}")
     List<Files> findByUserId(int userid);
 
