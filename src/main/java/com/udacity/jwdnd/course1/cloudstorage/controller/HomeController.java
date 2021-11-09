@@ -23,7 +23,7 @@ public class HomeController {
     private FilesService filesService;
 
     @GetMapping(value = {"/", "/home"})
-    public ModelAndView getHomePage(Authentication authentication) throws  Exception {
+    public ModelAndView getHomePage(Authentication authentication) throws Exception {
         SuperUser superUser = (SuperUser) authentication.getPrincipal();
         ModelAndView modelAndView = new ModelAndView("home");
         modelAndView.addObject("notes", notesService.getAllNotes(superUser.getUserid()));

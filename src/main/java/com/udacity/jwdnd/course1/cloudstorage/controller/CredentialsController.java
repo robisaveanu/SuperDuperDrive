@@ -21,8 +21,7 @@ public class CredentialsController {
         SuperUser superUser = (SuperUser) authentication.getPrincipal();
         if (credential.getCredentialid() > 0) {
             credentialsService.updateCredential(credential);
-        }
-        else {
+        } else {
             credentialsService.addCredential(credential, superUser.getUserid());
         }
         return "redirect:/result?success";
