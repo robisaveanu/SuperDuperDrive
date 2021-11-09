@@ -14,6 +14,7 @@ import org.springframework.boot.web.server.LocalServerPort;
 
 import java.time.Duration;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.waitAtMost;
@@ -54,23 +55,25 @@ class CloudStorageApplicationTests {
 
     @Test
     @Order(1)
-    void getLoginPage() {
+    void navigateToLoginPage() {
         driver.get("http://localhost:" + this.port + "/login");
-        Assertions.assertEquals("Login", driver.getTitle());
+        waitAtMost(10, TimeUnit.SECONDS).untilAsserted(() -> assertThat(driver.getTitle()).isEqualTo("Login"));
+
     }
 
     @Test
     @Order(2)
-    void getSignupPage() {
+    void navigateToSignupPage() {
         driver.get("http://localhost:" + this.port + "/signup");
-        Assertions.assertEquals("Sign Up", driver.getTitle());
+        waitAtMost(10, TimeUnit.SECONDS).untilAsserted(() -> assertThat(driver.getTitle()).isEqualTo("Sign Up"));
+
     }
 
     @Test
     @Order(3)
     void getUnauthorizedHomePage() {
         driver.get("http://localhost:" + this.port + "/home");
-        Assertions.assertEquals("Login", driver.getTitle());
+        waitAtMost(10, TimeUnit.SECONDS).untilAsserted(() -> assertThat(driver.getTitle()).isEqualTo("Login"));
     }
 
     @Test
@@ -79,12 +82,12 @@ class CloudStorageApplicationTests {
         WebDriverWait wait = new WebDriverWait(driver, 30);
         driver.get("http://localhost:" + this.port + "/result");
         wait.until(ExpectedConditions.elementToBeClickable(By.id("login")));
-        Assertions.assertEquals("Login", driver.getTitle());
+        waitAtMost(10, TimeUnit.SECONDS).untilAsserted(() -> assertThat(driver.getTitle()).isEqualTo("Login"));
     }
 
     @Test
     @Order(5)
-    void newUserAccessTest() {
+    void createNewUserTest() {
         WebDriverWait wait = new WebDriverWait(driver, 30);
         // signup
         driver.get("http://localhost:" + this.port + "/signup");
@@ -107,22 +110,22 @@ class CloudStorageApplicationTests {
         inputPassword.sendKeys(password);
         WebElement loginButton = driver.findElement(By.id("login"));
         loginButton.click();
-        Assertions.assertEquals("Home", driver.getTitle());
+        waitAtMost(10, TimeUnit.SECONDS).untilAsserted(() -> assertThat(driver.getTitle()).isEqualTo("Home"));
 
         //logout
         WebElement logoutButton = driver.findElement(By.id("logout"));
         logoutButton.click();
         wait.until(ExpectedConditions.elementToBeClickable(By.id("login")));
-        Assertions.assertEquals("Login", driver.getTitle());
+        waitAtMost(10, TimeUnit.SECONDS).untilAsserted(() -> assertThat(driver.getTitle()).isEqualTo("Login"));
 
         //Try accessing homepage
         driver.get("http://localhost:" + this.port + "/home");
-        Assertions.assertEquals("Login", driver.getTitle());
+        waitAtMost(10, TimeUnit.SECONDS).untilAsserted(() -> assertThat(driver.getTitle()).isEqualTo("Login"));
     }
 
     @Test
     @Order(6)
-    void noteCreationTest() {
+    void createNewNoteTest() {
         WebDriverWait wait = new WebDriverWait(driver, 30);
         JavascriptExecutor jse = (JavascriptExecutor) driver;
         //login
@@ -133,7 +136,7 @@ class CloudStorageApplicationTests {
         inputPassword.sendKeys(password);
         WebElement loginButton = driver.findElement(By.id("login"));
         loginButton.click();
-        Assertions.assertEquals("Home", driver.getTitle());
+        waitAtMost(10, TimeUnit.SECONDS).untilAsserted(() -> assertThat(driver.getTitle()).isEqualTo("Home"));
 
         //added note
         WebElement notesTab = driver.findElement(By.id("nav-notes-tab"));
@@ -146,7 +149,7 @@ class CloudStorageApplicationTests {
         notedescription.sendKeys(noteDescription);
         WebElement savechanges = driver.findElement(By.id("save-changes"));
         savechanges.click();
-        Assertions.assertEquals("Result", driver.getTitle());
+        waitAtMost(10, TimeUnit.SECONDS).untilAsserted(() -> assertThat(driver.getTitle()).isEqualTo("Result"));
 
         //check for note
         driver.get("http://localhost:" + this.port + "/home");
@@ -166,7 +169,7 @@ class CloudStorageApplicationTests {
 
     @Test
     @Order(7)
-    void noteUpdatingTest() {
+    void updateNoteTest() {
         WebDriverWait wait = new WebDriverWait(driver, 30);
         JavascriptExecutor jse = (JavascriptExecutor) driver;
         String newNoteTitle = "new note title";
@@ -178,7 +181,7 @@ class CloudStorageApplicationTests {
         inputPassword.sendKeys(password);
         WebElement loginButton = driver.findElement(By.id("login"));
         loginButton.click();
-        Assertions.assertEquals("Home", driver.getTitle());
+        waitAtMost(10, TimeUnit.SECONDS).untilAsserted(() -> assertThat(driver.getTitle()).isEqualTo("Home"));
 
         //update note
         WebElement notesTab = driver.findElement(By.id("nav-notes-tab"));
@@ -193,13 +196,14 @@ class CloudStorageApplicationTests {
             }
         }
         wait.until(ExpectedConditions.elementToBeClickable(editElement)).click();
-        WebElement notetitle = driver.findElement(By.id("note-title"));
-        wait.until(ExpectedConditions.elementToBeClickable(notetitle));
-        notetitle.clear();
-        notetitle.sendKeys(newNoteTitle);
-        WebElement savechanges = driver.findElement(By.id("save-changes"));
-        savechanges.click();
-        Assertions.assertEquals("Result", driver.getTitle());
+        WebElement noteTitle = driver.findElement(By.id("note-title"));
+        wait.until(ExpectedConditions.elementToBeClickable(noteTitle));
+        noteTitle.clear();
+        noteTitle.sendKeys(newNoteTitle);
+        WebElement saveChanges = driver.findElement(By.id("save-changes"));
+        saveChanges.click();
+        waitAtMost(10, TimeUnit.SECONDS).untilAsserted(() -> assertThat(driver.getTitle()).isEqualTo("Result"));
+
 
         //check the updated note
         driver.get("http://localhost:" + this.port + "/home");
@@ -219,7 +223,7 @@ class CloudStorageApplicationTests {
 
     @Test
     @Order(8)
-    void noteDeletionTest() {
+    void deleteNoteTest() {
         WebDriverWait wait = new WebDriverWait(driver, 30);
         JavascriptExecutor jse = (JavascriptExecutor) driver;
         //login
@@ -230,7 +234,7 @@ class CloudStorageApplicationTests {
         inputPassword.sendKeys(password);
         WebElement loginButton = driver.findElement(By.id("login"));
         loginButton.click();
-        Assertions.assertEquals("Home", driver.getTitle());
+        waitAtMost(10, TimeUnit.SECONDS).untilAsserted(() -> assertThat(driver.getTitle()).isEqualTo("Home"));
 
         WebElement notesTab = driver.findElement(By.id("nav-notes-tab"));
         jse.executeScript("arguments[0].click()", notesTab);
@@ -244,12 +248,12 @@ class CloudStorageApplicationTests {
             }
         }
         wait.until(ExpectedConditions.elementToBeClickable(deleteElement)).click();
-        Assertions.assertEquals("Result", driver.getTitle());
+        waitAtMost(10, TimeUnit.SECONDS).untilAsserted(() -> assertThat(driver.getTitle()).isEqualTo("Result"));
     }
 
     @Test
     @Order(9)
-    void credentialCreationTest() {
+    void createCredentialTest() {
         WebDriverWait wait = new WebDriverWait(driver, 30);
         JavascriptExecutor jse = (JavascriptExecutor) driver;
         //login
@@ -260,7 +264,7 @@ class CloudStorageApplicationTests {
         inputPassword.sendKeys(password);
         WebElement loginButton = driver.findElement(By.id("login"));
         loginButton.click();
-        Assertions.assertEquals("Home", driver.getTitle());
+        waitAtMost(10, TimeUnit.SECONDS).untilAsserted(() -> assertThat(driver.getTitle()).isEqualTo("Home"));
 
         WebElement credTab = driver.findElement(By.id("nav-credentials-tab"));
         jse.executeScript("arguments[0].click()", credTab);
@@ -274,7 +278,7 @@ class CloudStorageApplicationTests {
         credPassword.sendKeys(password);
         WebElement submit = driver.findElement(By.id("save-credential"));
         submit.click();
-        Assertions.assertEquals("Result", driver.getTitle());
+        waitAtMost(10, TimeUnit.SECONDS).untilAsserted(() -> assertThat(driver.getTitle()).isEqualTo("Result"));
 
         //check for credential
         driver.get("http://localhost:" + this.port + "/home");
@@ -294,7 +298,7 @@ class CloudStorageApplicationTests {
 
     @Test
     @Order(10)
-    void credentialUpdatingTest() {
+    void updateCredentialTest() {
         WebDriverWait wait = new WebDriverWait(driver, 30);
         JavascriptExecutor jse = (JavascriptExecutor) driver;
         String newCredUsername = "newUser";
@@ -306,7 +310,7 @@ class CloudStorageApplicationTests {
         inputPassword.sendKeys(password);
         WebElement loginButton = driver.findElement(By.id("login"));
         loginButton.click();
-        waitAtMost(ONE_MINUTE).untilAsserted(() -> assertThat(driver.getTitle()).isEqualTo("Home"));
+        waitAtMost(10, TimeUnit.SECONDS).untilAsserted(() -> assertThat(driver.getTitle()).isEqualTo("Home"));
 
         //update credential
         WebElement credTab = driver.findElement(By.id("nav-credentials-tab"));
@@ -327,7 +331,7 @@ class CloudStorageApplicationTests {
         credUsername.sendKeys(newCredUsername);
         WebElement savechanges = driver.findElement(By.id("save-credential"));
         savechanges.click();
-        Assertions.assertEquals("Result", driver.getTitle());
+        waitAtMost(10, TimeUnit.SECONDS).untilAsserted(() -> assertThat(driver.getTitle()).isEqualTo("Result"));
 
         //check the updated note
         driver.get("http://localhost:" + this.port + "/home");
@@ -347,7 +351,7 @@ class CloudStorageApplicationTests {
 
     @Test
     @Order(11)
-    void credentialDeletionTest() {
+    void deleteCredentialTest() {
         WebDriverWait wait = new WebDriverWait(driver, 30);
         JavascriptExecutor jse = (JavascriptExecutor) driver;
         //login
@@ -358,7 +362,7 @@ class CloudStorageApplicationTests {
         inputPassword.sendKeys(password);
         WebElement loginButton = driver.findElement(By.id("login"));
         loginButton.click();
-        Assertions.assertEquals("Home", driver.getTitle());
+        waitAtMost(10, TimeUnit.SECONDS).untilAsserted(() -> assertThat(driver.getTitle()).isEqualTo("Home"));
 
         WebElement credTab = driver.findElement(By.id("nav-credentials-tab"));
         jse.executeScript("arguments[0].click()", credTab);
@@ -372,6 +376,6 @@ class CloudStorageApplicationTests {
             }
         }
         wait.until(ExpectedConditions.elementToBeClickable(deleteElement)).click();
-        Assertions.assertEquals("Result", driver.getTitle());
+        waitAtMost(10, TimeUnit.SECONDS).untilAsserted(() -> assertThat(driver.getTitle()).isEqualTo("Result"));
     }
 }
