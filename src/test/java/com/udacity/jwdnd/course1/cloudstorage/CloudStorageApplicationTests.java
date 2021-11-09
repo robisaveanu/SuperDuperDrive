@@ -23,13 +23,13 @@ import static org.awaitility.Durations.ONE_MINUTE;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class CloudStorageApplicationTests {
-    private final static String firstName = "checkFirstName";
-    private final static String lastName = "checkLastName";
+    private final static String firstName = "FirstName";
+    private final static String lastName = "LastName";
     private final static String userName = "root";
     private final static String password = "password";
-    private final static String noteTitle = "Super test title";
-    private final static String noteDescription = "Super test description";
-    private final static String credURL = "example.com";
+    private final static String noteTitle = "This is a title";
+    private final static String noteDescription = "This is a description";
+    private final static String credURL = "automation.com";
 
     @LocalServerPort
     private int port;
