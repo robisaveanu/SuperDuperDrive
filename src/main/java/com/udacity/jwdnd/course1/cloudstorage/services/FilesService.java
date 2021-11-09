@@ -24,6 +24,10 @@ public class FilesService {
         return ResponseFile.builder().fileid(file.getFileid()).filename(file.getFilename()).dataURL(dataURL).build();
     }
 
+    public Files checkFile(String fileName, int userid) {
+        return filesMapper.getFileForUser(fileName, userid);
+    }
+
     public List<ResponseFile> getAllFiles(int userid) throws Exception {
         List<Files> files = filesMapper.findByUserId(userid);
         if (files == null) {

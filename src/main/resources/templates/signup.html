@@ -16,9 +16,6 @@
 
     <h1 class="display-5">Sign Up</h1>
     <form method="POST" th:action="@{/register}">
-        <div class="alert alert-dark" th:if="${param.success}">
-            You successfully signed up! Please continue to the <a th:href="@{/login}">login</a> page.
-        </div>
         <div class="alert alert-danger" th:if="${param.error}">
             <span>Signup Error</span>
         </div>

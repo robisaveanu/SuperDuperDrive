@@ -7,11 +7,15 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
 
+import java.io.File;
 import java.util.List;
 
 @Mapper
 @Repository
 public interface FilesMapper {
+
+    @Select("SELECT * FROM FILES WHERE filename = #{fileName} AND userid = #{userid}")
+    Files getFileForUser(String fileName, int userid);
 
     @Select("SELECT * FROM FILES WHERE userid = #{userid}")
     List<Files> findByUserId(int userid);

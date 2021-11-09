@@ -24,6 +24,6 @@ public class RegistrationController {
             return "redirect:signup?error";
         }
 
-        return "redirect:signup?success";
+        return "redirect:login?success";
     }
 }

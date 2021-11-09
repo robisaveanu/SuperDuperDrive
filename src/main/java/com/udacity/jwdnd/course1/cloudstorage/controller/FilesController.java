@@ -21,6 +21,12 @@ public class FilesController {
     @PostMapping("/files")
     public String saveFile(Authentication authentication, MultipartFile fileUpload) throws IOException {
         SuperUser superUser = (SuperUser) authentication.getPrincipal();
+        if (filesService.checkFile(fileUpload.getOriginalFilename(), superUser.getUserid()) != null) {
+            return "redirect:/result?fileExists";
+        }
+        if (fileUpload.getSize() > 10000000) {
+            return "redirect:/result?sizeExceeded";
+        }
         if (fileUpload.isEmpty()) {
             return "redirect:/result?error";
         }

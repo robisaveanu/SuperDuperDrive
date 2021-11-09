@@ -14,14 +14,17 @@
         <h1 class="display-5">Success</h1>
         <span>Your changes were successfully saved. Click <a th:href="@{/home}">here</a> to continue.</span>
     </div>
-    <div class="alert alert-danger fill-parent" th:if="${param.error}">
+    <div class="alert alert-danger fill-parent" th:if="${param.fileExists}">
         <h1 class="display-5">Error</h1>
-        <span>Your changes were not saved. Click <a th:href="@{/home}">here</a> to continue.</span>
+        <span>Your changes were not saved. The file is already uploaded! Click <a th:href="@{/home}">here</a> to continue.</span>
+    </div>
+    <div class="alert alert-danger fill-parent" th:if="${param.sizeExceeded}">
+        <h1 class="display-5">Error</h1>
+        <span>Your changes were not saved. File size is too big! Click <a th:href="@{/home}">here</a> to continue.</span>
     </div>
     <div class="alert alert-danger fill-parent" th:if="${param.error}">
         <h1 class="display-5">Error</h1>
-        <span>Changes Not Saved</span>
-        <span>Click <a th:href="@{/home}">here</a> to continue.</span>
+        <span>Your changes were not saved. Click <a th:href="@{/home}">here</a> to continue.</span>
     </div>
 </div>
 </body>
